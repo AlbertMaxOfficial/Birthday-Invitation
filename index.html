@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
+		/>
+		<title>Birthday Invitation | Whispering Garden</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				user-select: none;
+			}
+
+			body {
+				min-height: 100vh;
+				height: 100vh;
+				width: 100vw;
+				overflow: hidden;
+				background: #ece6db;
+				font-family:
+					"Times New Roman", "Georgia", "Palatino", "Segoe UI", serif;
+				position: relative;
+			}
+
+			/* GARDEN ATMOSPHERE - Black & White Ethereal */
+			.garden-backdrop {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(145deg, #e2dac8 0%, #cfc7b3 100%);
+				z-index: 0;
+			}
+
+			/* delicate botanical illustrations - background */
+			.garden-bg-pattern {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-image:
+					repeating-linear-gradient(
+						45deg,
+						rgba(0, 0, 0, 0.03) 0px,
+						rgba(0, 0, 0, 0.03) 2px,
+						transparent 2px,
+						transparent 10px
+					),
+					radial-gradient(
+						circle at 20% 40%,
+						rgba(0, 0, 0, 0.02) 1px,
+						transparent 1px
+					);
+				background-size:
+					32px 32px,
+					48px 48px;
+				pointer-events: none;
+				z-index: 0;
+			}
+
+			/* floating dust particles (slow, dreamy) */
+			.dust-particle {
+				position: fixed;
+				background: rgba(0, 0, 0, 0.1);
+				border-radius: 50%;
+				pointer-events: none;
+				z-index: 1;
+				animation: floatDust 18s infinite linear;
+			}
+
+			@keyframes floatDust {
+				0% {
+					transform: translateY(100vh) translateX(0) rotate(0deg);
+					opacity: 0;
+				}
+				10% {
+					opacity: 0.4;
+				}
+				90% {
+					opacity: 0.2;
+				}
+				100% {
+					transform: translateY(-20vh) translateX(30px) rotate(180deg);
+					opacity: 0;
+				}
+			}
+
+			/* LETTER STAGE - vintage paper */
+			.letter-stage {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 20;
+				transition:
+					opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+					visibility 0.7s;
+			}
+
+			.letter-card {
+				background: #faf7f0;
+				border-radius: 2rem;
+				padding: 2.5rem 3rem;
+				max-width: 520px;
+				width: 90%;
+				text-align: center;
+				box-shadow:
+					0 30px 50px -20px rgba(0, 0, 0, 0.3),
+					inset 0 1px 4px rgba(255, 255, 245, 0.8);
+				border: 1px solid rgba(0, 0, 0, 0.08);
+				backdrop-filter: blur(2px);
+				transition: transform 0.3s ease;
+			}
+
+			.envelope-icon {
+				font-size: 5rem;
+				filter: grayscale(1) brightness(0.35);
+				opacity: 0.85;
+				animation: gentleFloat 3s infinite ease-in-out;
+				margin-bottom: 0.5rem;
+				letter-spacing: 0.3rem;
+			}
+
+			@keyframes gentleFloat {
+				0%,
+				100% {
+					transform: translateY(0px);
+				}
+				50% {
+					transform: translateY(-8px);
+				}
+			}
+
+			.title {
+				font-size: 2.2rem;
+				font-weight: 300;
+				letter-spacing: 4px;
+				color: #2c2c2a;
+				font-family: "Times New Roman", serif;
+				text-transform: uppercase;
+				margin: 0.8rem 0 0.5rem;
+				border-top: 1px solid rgba(0, 0, 0, 0.12);
+				border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+				display: inline-block;
+				padding: 0.5rem 0;
+			}
+
+			.sub {
+				font-size: 0.95rem;
+				color: #4a4842;
+				font-style: italic;
+				margin: 1rem 0;
+				letter-spacing: 1px;
+			}
+
+			.open-letter-btn {
+				background: transparent;
+				border: 1.5px solid #2c2c2a;
+				padding: 0.8rem 2.2rem;
+				font-size: 1.1rem;
+				font-weight: 400;
+				color: #2c2c2a;
+				border-radius: 60px;
+				cursor: pointer;
+				font-family: "Times New Roman", serif;
+				transition: all 0.3s;
+				margin-top: 0.8rem;
+				letter-spacing: 2px;
+				backdrop-filter: blur(4px);
+			}
+
+			.open-letter-btn:hover {
+				background: #2c2c2a;
+				color: #faf7f0;
+				transform: scale(0.97);
+			}
+
+			/* FINAL IMAGE REVEAL - FULL SCREEN RESPONSIVE, NO BUTTON */
+			.image-reveal {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 30;
+				visibility: hidden;
+				opacity: 0;
+				transition:
+					visibility 0s 0.4s,
+					opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1);
+				background: rgba(0, 0, 0, 0.3);
+				backdrop-filter: blur(8px);
+			}
+
+			.image-reveal.visible {
+				visibility: visible;
+				opacity: 1;
+				transition:
+					visibility 0s 0s,
+					opacity 0.7s ease;
+			}
+
+			/* PERFECT IMAGE CONTAINER - FULLY RESPONSIVE, MAINTAINS ASPECT RATIO */
+			.image-container-perfect {
+				position: relative;
+				width: 92vw;
+				height: 88vh;
+				max-width: 1400px;
+				max-height: 90vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background: rgba(20, 18, 16, 0.92);
+				border-radius: 2rem;
+				overflow: hidden;
+				box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4);
+				border: 1px solid rgba(255, 250, 235, 0.25);
+			}
+
+			/* Image respects original dimensions — NO cropping, NO weird zoom, fully responsive */
+			.celebration-img-perfect {
+				width: auto;
+				height: auto;
+				max-width: 100%;
+				max-height: 100%;
+				object-fit: contain;
+				display: block;
+				filter: none;
+				box-shadow: none;
+				transition: transform 0.4s ease;
+			}
+
+			/* elegant caption only (no return button) */
+			.image-caption-only {
+				position: absolute;
+				bottom: 1.8rem;
+				left: 50%;
+				transform: translateX(-50%);
+				text-align: center;
+				z-index: 35;
+				background: rgba(250, 247, 240, 0.82);
+				backdrop-filter: blur(12px);
+				padding: 0.65rem 1.6rem;
+				border-radius: 60px;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+				pointer-events: none;
+				white-space: nowrap;
+			}
+
+			.img-label-elegant {
+				font-size: 0.9rem;
+				letter-spacing: 2.5px;
+				color: #2c2c2a;
+				font-style: italic;
+				font-weight: 400;
+			}
+
+			/* BURST LAYER - botanical monochrome symbols */
+			.burst-layer {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				z-index: 100;
+				overflow: hidden;
+			}
+
+			.bloom-symbol {
+				position: absolute;
+				will-change: transform, opacity;
+				filter: grayscale(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+				pointer-events: none;
+				animation: gardenFallFast 1.5s cubic-bezier(0.2, 0.85, 0.4, 1) forwards;
+				font-size: 1.8rem;
+				opacity: 0.75;
+			}
+
+			/* faster, elegant cascade */
+			@keyframes gardenFallFast {
+				0% {
+					opacity: 0;
+					transform: translateY(-20px) scale(0.2) rotate(0deg);
+				}
+				15% {
+					opacity: 0.92;
+					transform: translateY(25px) scale(1.08) rotate(8deg);
+				}
+				40% {
+					opacity: 0.95;
+					transform: translateY(90px) scale(1) rotate(5deg);
+				}
+				70% {
+					opacity: 0.8;
+					transform: translateY(180px) scale(0.85) rotate(-3deg);
+				}
+				100% {
+					opacity: 0;
+					transform: translateY(320px) scale(0.5) rotate(10deg);
+				}
+			}
+
+			/* smooth vanish when wiping */
+			.wipe-symbol {
+				animation: fadeAwayFast 0.35s ease-out forwards !important;
+			}
+
+			@keyframes fadeAwayFast {
+				0% {
+					opacity: 0.7;
+					transform: translateY(0) scale(0.9);
+				}
+				100% {
+					opacity: 0;
+					transform: translateY(-50px) scale(0.2);
+					visibility: hidden;
+				}
+			}
+
+			/* FULLY RESPONSIVE - ALL DEVICES */
+			@media (max-width: 768px) {
+				.letter-card {
+					padding: 1.6rem 2rem;
+					max-width: 440px;
+				}
+				.envelope-icon {
+					font-size: 4rem;
+				}
+				.title {
+					font-size: 1.7rem;
+					letter-spacing: 3px;
+				}
+				.sub {
+					font-size: 0.85rem;
+				}
+				.open-letter-btn {
+					padding: 0.6rem 1.8rem;
+					font-size: 1rem;
+				}
+				.bloom-symbol {
+					font-size: 1.4rem;
+				}
+				.image-container-perfect {
+					width: 94vw;
+					height: 85vh;
+					border-radius: 1.5rem;
+				}
+				.image-caption-only {
+					bottom: 1.2rem;
+					padding: 0.5rem 1.2rem;
+				}
+				.img-label-elegant {
+					font-size: 0.75rem;
+					letter-spacing: 2px;
+				}
+			}
+
+			@media (max-width: 480px) {
+				.letter-card {
+					padding: 1.2rem 1.5rem;
+					max-width: 360px;
+				}
+				.envelope-icon {
+					font-size: 3.2rem;
+				}
+				.title {
+					font-size: 1.3rem;
+					letter-spacing: 2px;
+				}
+				.sub {
+					font-size: 0.75rem;
+					margin: 0.6rem 0;
+				}
+				.open-letter-btn {
+					padding: 0.5rem 1.5rem;
+					font-size: 0.9rem;
+				}
+				.bloom-symbol {
+					font-size: 1.2rem;
+				}
+				.image-container-perfect {
+					width: 96vw;
+					height: 82vh;
+					border-radius: 1.2rem;
+				}
+				.img-label-elegant {
+					font-size: 0.65rem;
+					letter-spacing: 1.5px;
+				}
+				.image-caption-only {
+					padding: 0.4rem 1rem;
+					bottom: 0.9rem;
+				}
+			}
+
+			@media (min-width: 1440px) {
+				.image-container-perfect {
+					max-width: 1300px;
+					max-height: 88vh;
+				}
+				.bloom-symbol {
+					font-size: 2.2rem;
+				}
+			}
+
+			@media (min-width: 1920px) {
+				.image-container-perfect {
+					max-width: 1600px;
+					max-height: 90vh;
+				}
+				.letter-card {
+					max-width: 620px;
+				}
+				.title {
+					font-size: 2.6rem;
+				}
+			}
+
+			/* landscape mode optimizations */
+			@media (orientation: landscape) and (max-height: 600px) {
+				.letter-card {
+					padding: 1rem 2rem;
+				}
+				.envelope-icon {
+					font-size: 3rem;
+				}
+				.title {
+					font-size: 1.4rem;
+					margin: 0.3rem 0;
+				}
+				.sub {
+					margin: 0.4rem 0;
+				}
+				.open-letter-btn {
+					padding: 0.4rem 1.2rem;
+					font-size: 0.9rem;
+				}
+				.image-container-perfect {
+					height: 80vh;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="garden-backdrop"></div>
+		<div class="garden-bg-pattern"></div>
+
+		<!-- Ambient floating dust -->
+		<div id="dustContainer"></div>
+
+		<!-- LETTER VIEW -->
+		<div id="letterStage" class="letter-stage">
+			<div class="letter-card">
+				<div class="envelope-icon">✧ ༺✉️༻ ✧</div>
+				<div class="title">Birthday Arrival</div>
+				<div class="sub">❀ a letter from the silent grove ❀</div>
+				<button class="open-letter-btn" id="bloomTrigger">
+					🌿 open the petals 🌿
+				</button>
+				<p
+					style="
+						margin-top: 0.8rem;
+						font-size: 0.7rem;
+						letter-spacing: 1px;
+						color: #6b6a64;
+					"
+				>
+					monochrome fantasy · where symbols dance like wind
+				</p>
+			</div>
+		</div>
+
+		<!-- FINAL IMAGE REVEAL - NO RETURN BUTTON, ONLY ELEGANT CAPTION -->
+		<div id="imageReveal" class="image-reveal">
+			<div class="image-container-perfect">
+				<img
+					id="gardenImage"
+					class="celebration-img-perfect"
+					alt="ethereal garden"
+					src="img.jpeg"
+				/>
+			</div>
+
+		</div>
+
+		<!-- BURST LAYER FOR SYMBOLS -->
+		<div id="burstLayer" class="burst-layer"></div>
+
+		<script>
+			(function () {
+				// ========== MONOCHROME FANTASY GARDEN ==========
+				// delicate botanical symbols (pure black & white aesthetic)
+				const gardenSymbols = [
+					"❀",
+					"✿",
+					"❁",
+					"🌸",
+					"🌿",
+					"🍃",
+					"🍂",
+					"✧",
+					"༄",
+					"𓋴",
+					"𓆸",
+					"𓇼",
+					"☙",
+					"❦",
+					"✽",
+					"❈",
+					"✤",
+					"🍬",
+					"🍭",
+					"𓍊",
+					"𓋰",
+					"🌱",
+					"🌾",
+					"❋",
+					"✺",
+					"𖦹",
+					"𓂀",
+					"🍬",
+					"❉",
+					"✲",
+					"🌼",
+					"🌻",
+					"🕊",
+					"✨",
+				];
+
+				const letterStage = document.getElementById("letterStage");
+				const imageRevealDiv = document.getElementById("imageReveal");
+				const burstContainer = document.getElementById("burstLayer");
+				const openBtn = document.getElementById("bloomTrigger");
+				const finalImage = document.getElementById("gardenImage");
+
+				// Use the provided img.jpeg (keep original colors, perfect sizing)
+				finalImage.src = "img.jpeg";
+				finalImage.onerror = () => {
+					// fallback to a beautiful botanical image that's reliable and respects aspect ratio
+					finalImage.src =
+						"https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&w=1000&h=800&fit=crop";
+				};
+
+				// floating dust particles for ambient garden atmosphere
+				function createDust() {
+					const dustContainerEl = document.getElementById("dustContainer");
+					if (!dustContainerEl) return;
+					// Adjust dust count based on screen size for performance
+					const dustCount = window.innerWidth < 768 ? 24 : 38;
+					for (let i = 0; i < dustCount; i++) {
+						const dust = document.createElement("div");
+						dust.className = "dust-particle";
+						const size = 2 + Math.random() * 6;
+						dust.style.width = `${size}px`;
+						dust.style.height = `${size}px`;
+						dust.style.left = `${Math.random() * 100}%`;
+						dust.style.animationDelay = `${Math.random() * 20}s`;
+						dust.style.animationDuration = `${12 + Math.random() * 15}s`;
+						dust.style.opacity = `${0.1 + Math.random() * 0.2}`;
+						dustContainerEl.appendChild(dust);
+					}
+				}
+
+				// state for smooth burst (1-2 sec bloom)
+				let activeInterval = null;
+				let wipeTimeout = null;
+				let isBlooming = false;
+				let bloomPhase = false;
+
+				// clear all symbols
+				function clearAllSymbols() {
+					while (burstContainer.firstChild) {
+						burstContainer.removeChild(burstContainer.firstChild);
+					}
+				}
+
+				// create single botanical symbol with faster, lighter animation
+				function createSymbol(delayMs = 0) {
+					const symbol = document.createElement("div");
+					symbol.className = "bloom-symbol";
+
+					const randomSymbol =
+						gardenSymbols[Math.floor(Math.random() * gardenSymbols.length)];
+					symbol.textContent = randomSymbol;
+
+					// delicate size range
+					const sizeVal = 1.2 + Math.random() * 2.2;
+					symbol.style.fontSize = `${sizeVal}rem`;
+
+					const windowWidth = window.innerWidth;
+					const marginSafe = 15;
+					const leftPos =
+						marginSafe + Math.random() * (windowWidth - marginSafe * 2);
+					symbol.style.left = `${leftPos}px`;
+
+					// top origin: from -20px to 90px (emerging from upper garden)
+					const startY = -25 + Math.random() * 100;
+					symbol.style.top = `${startY}px`;
+
+					const initRotate = -20 + Math.random() * 40;
+					symbol.style.transform = `rotate(${initRotate}deg)`;
+
+					// FASTER ANIMATION: between 1.2s and 1.8s to fit 1-2 sec bloom window
+					const animDuration = 1.2 + Math.random() * 0.7;
+					symbol.style.animation = `gardenFallFast ${animDuration}s cubic-bezier(0.2, 0.85, 0.45, 1) forwards`;
+					if (delayMs > 0) {
+						symbol.style.animationDelay = `${delayMs}s`;
+					}
+
+					burstContainer.appendChild(symbol);
+
+					symbol.addEventListener(
+						"animationend",
+						() => {
+							if (symbol.parentNode) symbol.remove();
+						},
+						{ once: true },
+					);
+				}
+
+				// smooth burst sequence (bloom lasts ~1.65 seconds — between 1-2 sec)
+				function startGardenBloom(durationMs = 1650) {
+					if (activeInterval) clearInterval(activeInterval);
+
+					// initial cascade: dynamic count based on screen size (performance + beauty)
+					const initialCount = window.innerWidth < 768 ? 32 : 44;
+					for (let i = 0; i < initialCount; i++) {
+						setTimeout(() => createSymbol(0), i * 9);
+					}
+
+					let burstStart = Date.now();
+					activeInterval = setInterval(() => {
+						if (!bloomPhase) return;
+						const elapsed = Date.now() - burstStart;
+						if (elapsed >= durationMs) return;
+
+						// gentle, adaptive spawning for smooth feeling (2-5 per wave)
+						const spawnCount = 2 + Math.floor(Math.random() * 4);
+						for (let i = 0; i < spawnCount; i++) {
+							createSymbol(0);
+						}
+					}, 55);
+
+					wipeTimeout = setTimeout(() => {
+						if (activeInterval) {
+							clearInterval(activeInterval);
+							activeInterval = null;
+						}
+
+						// wipe out remaining symbols with graceful fade
+						const remainingSymbols = document.querySelectorAll(".bloom-symbol");
+						if (remainingSymbols.length) {
+							remainingSymbols.forEach((s) => {
+								s.classList.add("wipe-symbol");
+								s.addEventListener(
+									"animationend",
+									() => {
+										if (s.parentNode) s.remove();
+									},
+									{ once: true },
+								);
+							});
+						}
+
+						// after wipe, reveal final perfectly sized image
+						setTimeout(() => {
+							revealEnchantedImage();
+						}, 320);
+					}, durationMs);
+				}
+
+				// reveal final image — full screen but respecting original dimensions
+				function revealEnchantedImage() {
+					if (letterStage) {
+						letterStage.style.transition =
+							"opacity 0.6s cubic-bezier(0.2,0.9,0.3,1)";
+						letterStage.style.opacity = "0";
+						letterStage.style.visibility = "hidden";
+						setTimeout(() => {
+							letterStage.style.display = "none";
+						}, 600);
+					}
+
+					imageRevealDiv.classList.add("visible");
+					clearAllSymbols();
+					isBlooming = false;
+					bloomPhase = false;
+				}
+
+				// trigger bloom (open letter) with 1-2 sec burst exactly
+				function triggerGardenBloom() {
+					if (isBlooming) return;
+					isBlooming = true;
+					bloomPhase = true;
+
+					if (activeInterval) clearInterval(activeInterval);
+					if (wipeTimeout) clearTimeout(wipeTimeout);
+					clearAllSymbols();
+
+					// Bloom total duration ~1.65 sec (between 1 and 2 sec smooth)
+					startGardenBloom(1650);
+
+					const btn = document.querySelector(".open-letter-btn");
+					if (btn) {
+						btn.style.transform = "scale(0.95)";
+						setTimeout(() => {
+							if (btn) btn.style.transform = "";
+						}, 150);
+					}
+				}
+
+				// Event listener for open button (fresh binding)
+				if (openBtn) {
+					const newOpen = openBtn.cloneNode(true);
+					openBtn.parentNode.replaceChild(newOpen, openBtn);
+					newOpen.addEventListener("click", (e) => {
+						e.preventDefault();
+						triggerGardenBloom();
+					});
+				}
+
+				// create floating dust atmosphere
+				createDust();
+
+				// initial state: letter visible, image hidden
+				letterStage.style.display = "flex";
+				letterStage.style.opacity = "1";
+				letterStage.style.visibility = "visible";
+				imageRevealDiv.classList.remove("visible");
+				clearAllSymbols();
+				isBlooming = false;
+				bloomPhase = false;
+
+				// subtle sway effect to garden pattern
+				const bgPattern = document.querySelector(".garden-bg-pattern");
+				if (bgPattern) {
+					bgPattern.style.transition = "transform 0.2s";
+				}
+
+				// preload final image for instant reveal
+				const preloader = new Image();
+				preloader.src = finalImage.src;
+
+				// responsive cleanup on resize
+				let resizeTimer;
+				window.addEventListener("resize", () => {
+					clearTimeout(resizeTimer);
+					resizeTimer = setTimeout(() => {
+						if (!isBlooming && letterStage.style.display !== "none") {
+							clearAllSymbols();
+						}
+					}, 200);
+				});
+
+				// Final delicate atmospheric floating symbols (pre-ambiance, only if letter visible)
+				setTimeout(() => {
+					if (
+						!isBlooming &&
+						letterStage.style.display !== "none" &&
+						letterStage.style.opacity !== "0"
+					) {
+						for (let i = 0; i < 8; i++) {
+							setTimeout(() => createSymbol(0), i * 160);
+						}
+						setTimeout(() => clearAllSymbols(), 2200);
+					}
+				}, 800);
+
+				console.log(
+					"✧ fully responsive monochrome garden — 1.65s bloom, no return button, perfect image fit ✧",
+				);
+			})();
+		</script>
+	</body>
+</html>
