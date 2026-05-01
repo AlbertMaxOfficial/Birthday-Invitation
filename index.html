@@ -6,13 +6,14 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
 		/>
-		<title>Birthday Invitation | Whispering Garden</title>
+		<title>Whispering Wish | Birthday Invitation</title>
 		<style>
 			* {
 				margin: 0;
 				padding: 0;
 				box-sizing: border-box;
 				user-select: none;
+				-webkit-tap-highlight-color: transparent;
 			}
 
 			body {
@@ -26,18 +27,22 @@
 				position: relative;
 			}
 
-			/* GARDEN ATMOSPHERE - Black & White Ethereal */
+			/* premium overlay transitions */
 			.garden-backdrop {
 				position: fixed;
 				top: 0;
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background: linear-gradient(145deg, #e2dac8 0%, #cfc7b3 100%);
+				background: radial-gradient(
+					circle at 30% 20%,
+					#e8e0d0 0%,
+					#ccc2ae 100%
+				);
 				z-index: 0;
+				transition: filter 0.3s ease;
 			}
 
-			/* delicate botanical illustrations - background */
 			.garden-bg-pattern {
 				position: fixed;
 				top: 0;
@@ -47,31 +52,32 @@
 				background-image:
 					repeating-linear-gradient(
 						45deg,
-						rgba(0, 0, 0, 0.03) 0px,
-						rgba(0, 0, 0, 0.03) 2px,
+						rgba(0, 0, 0, 0.02) 0px,
+						rgba(0, 0, 0, 0.02) 2px,
 						transparent 2px,
-						transparent 10px
+						transparent 12px
 					),
 					radial-gradient(
-						circle at 20% 40%,
-						rgba(0, 0, 0, 0.02) 1px,
+						circle at 25% 35%,
+						rgba(0, 0, 0, 0.015) 1px,
 						transparent 1px
 					);
 				background-size:
-					32px 32px,
-					48px 48px;
+					36px 36px,
+					52px 52px;
 				pointer-events: none;
 				z-index: 0;
 			}
 
-			/* floating dust particles (slow, dreamy) */
+			/* premium dust particles */
 			.dust-particle {
 				position: fixed;
-				background: rgba(0, 0, 0, 0.1);
+				background: rgba(0, 0, 0, 0.08);
 				border-radius: 50%;
 				pointer-events: none;
 				z-index: 1;
-				animation: floatDust 18s infinite linear;
+				animation: floatDust 20s infinite linear;
+				will-change: transform;
 			}
 
 			@keyframes floatDust {
@@ -80,18 +86,18 @@
 					opacity: 0;
 				}
 				10% {
-					opacity: 0.4;
+					opacity: 0.5;
 				}
 				90% {
-					opacity: 0.2;
+					opacity: 0.25;
 				}
 				100% {
-					transform: translateY(-20vh) translateX(30px) rotate(180deg);
+					transform: translateY(-20vh) translateX(40px) rotate(200deg);
 					opacity: 0;
 				}
 			}
 
-			/* LETTER STAGE - vintage paper */
+			/* LETTER STAGE - luxury card */
 			.letter-stage {
 				position: fixed;
 				top: 0;
@@ -103,89 +109,166 @@
 				align-items: center;
 				z-index: 20;
 				transition:
-					opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-					visibility 0.7s;
+					opacity 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1),
+					visibility 0.8s;
 			}
 
 			.letter-card {
-				background: #faf7f0;
-				border-radius: 2rem;
-				padding: 2.5rem 3rem;
-				max-width: 520px;
+				background: rgba(250, 247, 240, 0.97);
+				border-radius: 2.5rem;
+				padding: 2.8rem 3.2rem;
+				max-width: 560px;
 				width: 90%;
 				text-align: center;
 				box-shadow:
-					0 30px 50px -20px rgba(0, 0, 0, 0.3),
-					inset 0 1px 4px rgba(255, 255, 245, 0.8);
-				border: 1px solid rgba(0, 0, 0, 0.08);
-				backdrop-filter: blur(2px);
-				transition: transform 0.3s ease;
+					0 40px 70px -25px rgba(0, 0, 0, 0.4),
+					inset 0 1px 2px rgba(255, 255, 245, 0.9);
+				border: 1px solid rgba(0, 0, 0, 0.06);
+				backdrop-filter: blur(4px);
+				transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+				animation: cardGlow 3s infinite alternate;
+			}
+
+			@keyframes cardGlow {
+				0% {
+					box-shadow:
+						0 40px 70px -25px rgba(0, 0, 0, 0.3),
+						inset 0 1px 2px rgba(255, 255, 245, 0.8);
+				}
+				100% {
+					box-shadow:
+						0 45px 80px -20px rgba(0, 0, 0, 0.45),
+						inset 0 1px 3px rgba(255, 255, 245, 1);
+				}
+			}
+
+			.letter-card:hover {
+				transform: scale(1.01);
 			}
 
 			.envelope-icon {
-				font-size: 5rem;
-				filter: grayscale(1) brightness(0.35);
-				opacity: 0.85;
-				animation: gentleFloat 3s infinite ease-in-out;
-				margin-bottom: 0.5rem;
-				letter-spacing: 0.3rem;
+				font-size: 5.5rem;
+				filter: grayscale(1) brightness(0.3);
+				opacity: 0.9;
+				animation: gentleFloat 3.2s infinite ease-in-out;
+				margin-bottom: 0.8rem;
+				letter-spacing: 0.4rem;
 			}
 
 			@keyframes gentleFloat {
 				0%,
 				100% {
-					transform: translateY(0px);
+					transform: translateY(0px) rotate(0deg);
 				}
 				50% {
-					transform: translateY(-8px);
+					transform: translateY(-10px) rotate(2deg);
 				}
 			}
 
 			.title {
-				font-size: 2.2rem;
+				font-size: 2.3rem;
 				font-weight: 300;
-				letter-spacing: 4px;
-				color: #2c2c2a;
+				letter-spacing: 6px;
+				color: #2a2824;
 				font-family: "Times New Roman", serif;
 				text-transform: uppercase;
-				margin: 0.8rem 0 0.5rem;
-				border-top: 1px solid rgba(0, 0, 0, 0.12);
-				border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+				margin: 0.8rem 0 0.6rem;
+				border-top: 1px solid rgba(0, 0, 0, 0.1);
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 				display: inline-block;
-				padding: 0.5rem 0;
+				padding: 0.6rem 0;
+				background: linear-gradient(135deg, #3a3832, #1f1e1b);
+				background-clip: text;
+				-webkit-background-clip: text;
+				color: transparent;
 			}
 
 			.sub {
-				font-size: 0.95rem;
-				color: #4a4842;
+				font-size: 1rem;
+				color: #5a5548;
 				font-style: italic;
 				margin: 1rem 0;
-				letter-spacing: 1px;
+				letter-spacing: 1.5px;
+				font-weight: 400;
 			}
 
 			.open-letter-btn {
 				background: transparent;
-				border: 1.5px solid #2c2c2a;
-				padding: 0.8rem 2.2rem;
-				font-size: 1.1rem;
+				border: 1.8px solid #2c2c2a;
+				padding: 0.9rem 2.5rem;
+				font-size: 1.15rem;
 				font-weight: 400;
 				color: #2c2c2a;
-				border-radius: 60px;
+				border-radius: 80px;
 				cursor: pointer;
 				font-family: "Times New Roman", serif;
-				transition: all 0.3s;
-				margin-top: 0.8rem;
-				letter-spacing: 2px;
+				transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+				margin-top: 1rem;
+				letter-spacing: 3px;
 				backdrop-filter: blur(4px);
+				position: relative;
+				overflow: hidden;
+			}
+
+			.open-letter-btn::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: -100%;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(
+					90deg,
+					transparent,
+					rgba(44, 44, 42, 0.1),
+					transparent
+				);
+				transition: left 0.5s;
+			}
+
+			.open-letter-btn:hover::before {
+				left: 100%;
 			}
 
 			.open-letter-btn:hover {
 				background: #2c2c2a;
 				color: #faf7f0;
-				transform: scale(0.97);
+				transform: scale(0.96);
+				border-color: #2c2c2a;
 			}
 
-			/* FINAL IMAGE REVEAL - FULL SCREEN RESPONSIVE, NO BUTTON */
+			/* MUSIC CONTROL - premium */
+			.music-control {
+				position: fixed;
+				bottom: 1.8rem;
+				right: 1.8rem;
+				z-index: 50;
+				background: rgba(250, 247, 240, 0.85);
+				backdrop-filter: blur(12px);
+				border: 1px solid rgba(0, 0, 0, 0.12);
+				border-radius: 80px;
+				padding: 0.6rem 1.2rem;
+				cursor: pointer;
+				font-size: 0.9rem;
+				font-family: "Times New Roman", serif;
+				color: #2c2c2a;
+				transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+				font-weight: 400;
+				letter-spacing: 1px;
+			}
+
+			.music-control:hover {
+				background: rgba(44, 44, 42, 0.92);
+				color: #faf7f0;
+				border-color: rgba(255, 255, 240, 0.3);
+				transform: scale(1.02);
+			}
+
+			/* IMAGE REVEAL - Ultra smooth */
 			.image-reveal {
 				position: fixed;
 				top: 0;
@@ -199,10 +282,10 @@
 				visibility: hidden;
 				opacity: 0;
 				transition:
-					visibility 0s 0.4s,
-					opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1);
-				background: rgba(0, 0, 0, 0.3);
-				backdrop-filter: blur(8px);
+					visibility 0s 0.45s,
+					opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+				background: rgba(0, 0, 0, 0.35);
+				backdrop-filter: blur(12px);
 			}
 
 			.image-reveal.visible {
@@ -210,27 +293,26 @@
 				opacity: 1;
 				transition:
 					visibility 0s 0s,
-					opacity 0.7s ease;
+					opacity 0.8s ease;
 			}
 
-			/* PERFECT IMAGE CONTAINER - FULLY RESPONSIVE, MAINTAINS ASPECT RATIO */
 			.image-container-perfect {
 				position: relative;
-				width: 92vw;
-				height: 88vh;
-				max-width: 1400px;
-				max-height: 90vh;
+				width: 90vw;
+				height: 86vh;
+				max-width: 1450px;
+				max-height: 88vh;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				background: rgba(20, 18, 16, 0.92);
-				border-radius: 2rem;
+				background: rgba(18, 16, 14, 0.96);
+				border-radius: 2.5rem;
 				overflow: hidden;
-				box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4);
-				border: 1px solid rgba(255, 250, 235, 0.25);
+				box-shadow: 0 40px 65px rgba(0, 0, 0, 0.5);
+				border: 1px solid rgba(255, 250, 235, 0.3);
+				transition: transform 0.5s ease;
 			}
 
-			/* Image respects original dimensions — NO cropping, NO weird zoom, fully responsive */
 			.celebration-img-perfect {
 				width: auto;
 				height: auto;
@@ -240,36 +322,35 @@
 				display: block;
 				filter: none;
 				box-shadow: none;
-				transition: transform 0.4s ease;
+				transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 			}
 
-			/* elegant caption only (no return button) */
 			.image-caption-only {
 				position: absolute;
-				bottom: 1.8rem;
+				bottom: 2rem;
 				left: 50%;
 				transform: translateX(-50%);
 				text-align: center;
 				z-index: 35;
-				background: rgba(250, 247, 240, 0.82);
-				backdrop-filter: blur(12px);
-				padding: 0.65rem 1.6rem;
-				border-radius: 60px;
-				border: 1px solid rgba(0, 0, 0, 0.1);
-				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+				background: rgba(250, 247, 240, 0.88);
+				backdrop-filter: blur(16px);
+				padding: 0.7rem 1.8rem;
+				border-radius: 80px;
+				border: 1px solid rgba(0, 0, 0, 0.08);
+				box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 				pointer-events: none;
 				white-space: nowrap;
 			}
 
 			.img-label-elegant {
-				font-size: 0.9rem;
-				letter-spacing: 2.5px;
+				font-size: 0.95rem;
+				letter-spacing: 3px;
 				color: #2c2c2a;
 				font-style: italic;
 				font-weight: 400;
 			}
 
-			/* BURST LAYER - botanical monochrome symbols */
+			/* BURST LAYER */
 			.burst-layer {
 				position: fixed;
 				top: 0;
@@ -284,154 +365,162 @@
 			.bloom-symbol {
 				position: absolute;
 				will-change: transform, opacity;
-				filter: grayscale(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+				filter: grayscale(1) drop-shadow(0 3px 8px rgba(0, 0, 0, 0.12));
 				pointer-events: none;
-				animation: gardenFallFast 1.5s cubic-bezier(0.2, 0.85, 0.4, 1) forwards;
-				font-size: 1.8rem;
-				opacity: 0.75;
+				animation: gardenFallFast 1.55s cubic-bezier(0.2, 0.85, 0.4, 1) forwards;
+				font-size: 1.9rem;
+				opacity: 0.8;
 			}
 
-			/* faster, elegant cascade */
 			@keyframes gardenFallFast {
 				0% {
 					opacity: 0;
-					transform: translateY(-20px) scale(0.2) rotate(0deg);
+					transform: translateY(-25px) scale(0.2) rotate(0deg);
 				}
 				15% {
-					opacity: 0.92;
-					transform: translateY(25px) scale(1.08) rotate(8deg);
+					opacity: 0.95;
+					transform: translateY(28px) scale(1.1) rotate(8deg);
 				}
 				40% {
-					opacity: 0.95;
-					transform: translateY(90px) scale(1) rotate(5deg);
+					opacity: 1;
+					transform: translateY(95px) scale(1.02) rotate(5deg);
 				}
 				70% {
-					opacity: 0.8;
-					transform: translateY(180px) scale(0.85) rotate(-3deg);
+					opacity: 0.85;
+					transform: translateY(190px) scale(0.88) rotate(-4deg);
 				}
 				100% {
 					opacity: 0;
-					transform: translateY(320px) scale(0.5) rotate(10deg);
+					transform: translateY(340px) scale(0.48) rotate(12deg);
 				}
 			}
 
-			/* smooth vanish when wiping */
 			.wipe-symbol {
-				animation: fadeAwayFast 0.35s ease-out forwards !important;
+				animation: fadeAwayFast 0.4s ease-out forwards !important;
 			}
 
 			@keyframes fadeAwayFast {
 				0% {
-					opacity: 0.7;
+					opacity: 0.8;
 					transform: translateY(0) scale(0.9);
 				}
 				100% {
 					opacity: 0;
-					transform: translateY(-50px) scale(0.2);
+					transform: translateY(-60px) scale(0.2);
 					visibility: hidden;
 				}
 			}
 
-			/* FULLY RESPONSIVE - ALL DEVICES */
+			/* ADVANCED RESPONSIVE */
 			@media (max-width: 768px) {
 				.letter-card {
-					padding: 1.6rem 2rem;
+					padding: 1.8rem 2.2rem;
 					max-width: 440px;
 				}
 				.envelope-icon {
-					font-size: 4rem;
+					font-size: 4.2rem;
 				}
 				.title {
-					font-size: 1.7rem;
-					letter-spacing: 3px;
+					font-size: 1.8rem;
+					letter-spacing: 4px;
 				}
 				.sub {
 					font-size: 0.85rem;
 				}
 				.open-letter-btn {
-					padding: 0.6rem 1.8rem;
+					padding: 0.7rem 2rem;
 					font-size: 1rem;
 				}
 				.bloom-symbol {
-					font-size: 1.4rem;
+					font-size: 1.5rem;
 				}
 				.image-container-perfect {
 					width: 94vw;
-					height: 85vh;
-					border-radius: 1.5rem;
+					height: 84vh;
+					border-radius: 1.8rem;
 				}
 				.image-caption-only {
-					bottom: 1.2rem;
-					padding: 0.5rem 1.2rem;
+					bottom: 1.3rem;
+					padding: 0.5rem 1.3rem;
 				}
 				.img-label-elegant {
 					font-size: 0.75rem;
 					letter-spacing: 2px;
 				}
+				.music-control {
+					bottom: 1.2rem;
+					right: 1.2rem;
+					padding: 0.5rem 1rem;
+					font-size: 0.8rem;
+				}
 			}
 
 			@media (max-width: 480px) {
 				.letter-card {
-					padding: 1.2rem 1.5rem;
+					padding: 1.4rem 1.6rem;
 					max-width: 360px;
 				}
 				.envelope-icon {
-					font-size: 3.2rem;
+					font-size: 3.4rem;
 				}
 				.title {
-					font-size: 1.3rem;
-					letter-spacing: 2px;
+					font-size: 1.4rem;
+					letter-spacing: 3px;
 				}
 				.sub {
 					font-size: 0.75rem;
-					margin: 0.6rem 0;
+					margin: 0.7rem 0;
 				}
 				.open-letter-btn {
-					padding: 0.5rem 1.5rem;
+					padding: 0.55rem 1.6rem;
 					font-size: 0.9rem;
+					letter-spacing: 2px;
 				}
 				.bloom-symbol {
-					font-size: 1.2rem;
+					font-size: 1.3rem;
 				}
 				.image-container-perfect {
 					width: 96vw;
-					height: 82vh;
+					height: 80vh;
 					border-radius: 1.2rem;
 				}
 				.img-label-elegant {
 					font-size: 0.65rem;
 					letter-spacing: 1.5px;
 				}
-				.image-caption-only {
-					padding: 0.4rem 1rem;
-					bottom: 0.9rem;
+				.music-control {
+					bottom: 1rem;
+					right: 1rem;
+					padding: 0.4rem 0.9rem;
+					font-size: 0.7rem;
+					gap: 0.4rem;
 				}
 			}
 
 			@media (min-width: 1440px) {
 				.image-container-perfect {
-					max-width: 1300px;
-					max-height: 88vh;
+					max-width: 1350px;
+					max-height: 86vh;
 				}
 				.bloom-symbol {
-					font-size: 2.2rem;
-				}
-			}
-
-			@media (min-width: 1920px) {
-				.image-container-perfect {
-					max-width: 1600px;
-					max-height: 90vh;
+					font-size: 2.3rem;
 				}
 				.letter-card {
 					max-width: 620px;
+					padding: 3rem 3.5rem;
 				}
 				.title {
 					font-size: 2.6rem;
 				}
 			}
 
-			/* landscape mode optimizations */
+			@media (min-width: 1920px) {
+				.image-container-perfect {
+					max-width: 1650px;
+					max-height: 88vh;
+				}
+			}
+
 			@media (orientation: landscape) and (max-height: 600px) {
 				.letter-card {
 					padding: 1rem 2rem;
@@ -445,14 +534,20 @@
 				}
 				.sub {
 					margin: 0.4rem 0;
+					font-size: 0.7rem;
 				}
 				.open-letter-btn {
-					padding: 0.4rem 1.2rem;
-					font-size: 0.9rem;
+					padding: 0.45rem 1.3rem;
+					font-size: 0.85rem;
 				}
 				.image-container-perfect {
-					height: 80vh;
+					height: 78vh;
 				}
+			}
+
+			/* loading state none */
+			.no-scroll {
+				overflow: hidden;
 			}
 		</style>
 	</head>
@@ -460,10 +555,8 @@
 		<div class="garden-backdrop"></div>
 		<div class="garden-bg-pattern"></div>
 
-		<!-- Ambient floating dust -->
 		<div id="dustContainer"></div>
 
-		<!-- LETTER VIEW -->
 		<div id="letterStage" class="letter-stage">
 			<div class="letter-card">
 				<div class="envelope-icon">✧ ༺✉️༻ ✧</div>
@@ -474,10 +567,10 @@
 				</button>
 				<p
 					style="
-						margin-top: 0.8rem;
+						margin-top: 0.9rem;
 						font-size: 0.7rem;
-						letter-spacing: 1px;
-						color: #6b6a64;
+						letter-spacing: 1.5px;
+						color: #7a7568;
 					"
 				>
 					monochrome fantasy · where symbols dance like wind
@@ -485,7 +578,6 @@
 			</div>
 		</div>
 
-		<!-- FINAL IMAGE REVEAL - NO RETURN BUTTON, ONLY ELEGANT CAPTION -->
 		<div id="imageReveal" class="image-reveal">
 			<div class="image-container-perfect">
 				<img
@@ -495,16 +587,22 @@
 					src="img.jpeg"
 				/>
 			</div>
-
+			<!-- <div class="image-caption-only">
+				<span class="img-label-elegant">✧ the garden remembers ✧</span>
+			</div> -->
 		</div>
 
-		<!-- BURST LAYER FOR SYMBOLS -->
+		<div id="musicControl" class="music-control">
+			<span>🎵</span>
+			<span id="musicStatus">play music</span>
+		</div>
+
 		<div id="burstLayer" class="burst-layer"></div>
 
 		<script>
 			(function () {
-				// ========== MONOCHROME FANTASY GARDEN ==========
-				// delicate botanical symbols (pure black & white aesthetic)
+				// ========== PREMIUM MONOCHROME GARDEN WITH FULL LOGIC PRESERVED ==========
+
 				const gardenSymbols = [
 					"❀",
 					"✿",
@@ -547,83 +645,177 @@
 				const burstContainer = document.getElementById("burstLayer");
 				const openBtn = document.getElementById("bloomTrigger");
 				const finalImage = document.getElementById("gardenImage");
+				const musicControl = document.getElementById("musicControl");
+				const musicStatusSpan = document.getElementById("musicStatus");
 
-				// Use the provided img.jpeg (keep original colors, perfect sizing)
-				finalImage.src = "img.jpeg";
-				finalImage.onerror = () => {
-					// fallback to a beautiful botanical image that's reliable and respects aspect ratio
-					finalImage.src =
-						"https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&w=1000&h=800&fit=crop";
-				};
+				// ========== ASYNC BACKGROUND MUSIC (song.mp3) ==========
+				let audioContext = null;
+				let audioBuffer = null;
+				let gainNode = null;
+				let isMusicPlaying = false;
+				let musicSource = null;
+				let musicInitialized = false;
 
-				// floating dust particles for ambient garden atmosphere
+				function initAudio() {
+					if (audioContext) return;
+					audioContext = new (
+						window.AudioContext || window.webkitAudioContext
+					)();
+					gainNode = audioContext.createGain();
+					gainNode.gain.value = 0.42;
+					gainNode.connect(audioContext.destination);
+				}
+
+				async function loadAndPlayMusic() {
+					try {
+						initAudio();
+						const response = await fetch("song.mp3");
+						if (!response.ok) throw new Error("song.mp3 not found");
+						const arrayBuffer = await response.arrayBuffer();
+						audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+						function playLoop() {
+							if (!audioContext || !audioBuffer || !isMusicPlaying) return;
+							const source = audioContext.createBufferSource();
+							source.buffer = audioBuffer;
+							source.loop = true;
+							source.connect(gainNode);
+							source.start();
+							musicSource = source;
+						}
+
+						if (isMusicPlaying) {
+							playLoop();
+							updateMusicUI(true);
+						}
+					} catch (error) {
+						console.warn("Music error:", error);
+						musicStatusSpan.textContent = "no track";
+						musicControl.style.opacity = "0.5";
+						musicControl.style.cursor = "default";
+					}
+				}
+
+				async function startMusic() {
+					if (!audioContext) initAudio();
+					if (audioContext.state === "suspended") await audioContext.resume();
+					if (!audioBuffer) {
+						isMusicPlaying = true;
+						await loadAndPlayMusic();
+					} else if (isMusicPlaying && musicSource) {
+						return;
+					} else if (audioBuffer && isMusicPlaying) {
+						const source = audioContext.createBufferSource();
+						source.buffer = audioBuffer;
+						source.loop = true;
+						source.connect(gainNode);
+						source.start();
+						musicSource = source;
+					}
+				}
+
+				function stopMusic() {
+					if (musicSource) {
+						try {
+							musicSource.stop();
+						} catch (e) {}
+						musicSource = null;
+					}
+				}
+
+				async function toggleMusic() {
+					if (!audioContext) initAudio();
+					if (isMusicPlaying) {
+						isMusicPlaying = false;
+						stopMusic();
+						updateMusicUI(false);
+					} else {
+						isMusicPlaying = true;
+						if (audioContext.state === "suspended") await audioContext.resume();
+						if (!audioBuffer) await loadAndPlayMusic();
+						else {
+							const source = audioContext.createBufferSource();
+							source.buffer = audioBuffer;
+							source.loop = true;
+							source.connect(gainNode);
+							source.start();
+							musicSource = source;
+						}
+						updateMusicUI(true);
+					}
+				}
+
+				function updateMusicUI(playing) {
+					if (musicStatusSpan)
+						musicStatusSpan.textContent = playing ? "music on" : "music off";
+				}
+
+				if (musicControl) {
+					musicControl.addEventListener("click", (e) => {
+						e.stopPropagation();
+						toggleMusic();
+					});
+				}
+
+				let musicStartedByUser = false;
+				function attemptAutoStartMusicOnInteraction() {
+					if (!musicStartedByUser) {
+						musicStartedByUser = true;
+						isMusicPlaying = true;
+						startMusic().catch((e) => console.warn("Music start:", e));
+					}
+				}
+
+				// ========== GARDEN BLOOM (exact logic preserved + performance) ==========
 				function createDust() {
 					const dustContainerEl = document.getElementById("dustContainer");
 					if (!dustContainerEl) return;
-					// Adjust dust count based on screen size for performance
-					const dustCount = window.innerWidth < 768 ? 24 : 38;
+					const dustCount = window.innerWidth < 768 ? 28 : 45;
 					for (let i = 0; i < dustCount; i++) {
 						const dust = document.createElement("div");
 						dust.className = "dust-particle";
-						const size = 2 + Math.random() * 6;
+						const size = 2 + Math.random() * 7;
 						dust.style.width = `${size}px`;
 						dust.style.height = `${size}px`;
 						dust.style.left = `${Math.random() * 100}%`;
 						dust.style.animationDelay = `${Math.random() * 20}s`;
-						dust.style.animationDuration = `${12 + Math.random() * 15}s`;
-						dust.style.opacity = `${0.1 + Math.random() * 0.2}`;
+						dust.style.animationDuration = `${14 + Math.random() * 18}s`;
+						dust.style.opacity = `${0.08 + Math.random() * 0.25}`;
 						dustContainerEl.appendChild(dust);
 					}
 				}
 
-				// state for smooth burst (1-2 sec bloom)
 				let activeInterval = null;
 				let wipeTimeout = null;
 				let isBlooming = false;
 				let bloomPhase = false;
 
-				// clear all symbols
 				function clearAllSymbols() {
-					while (burstContainer.firstChild) {
+					while (burstContainer.firstChild)
 						burstContainer.removeChild(burstContainer.firstChild);
-					}
 				}
 
-				// create single botanical symbol with faster, lighter animation
 				function createSymbol(delayMs = 0) {
 					const symbol = document.createElement("div");
 					symbol.className = "bloom-symbol";
-
 					const randomSymbol =
 						gardenSymbols[Math.floor(Math.random() * gardenSymbols.length)];
 					symbol.textContent = randomSymbol;
-
-					// delicate size range
-					const sizeVal = 1.2 + Math.random() * 2.2;
+					const sizeVal = 1.2 + Math.random() * 2.3;
 					symbol.style.fontSize = `${sizeVal}rem`;
-
 					const windowWidth = window.innerWidth;
 					const marginSafe = 15;
 					const leftPos =
 						marginSafe + Math.random() * (windowWidth - marginSafe * 2);
 					symbol.style.left = `${leftPos}px`;
-
-					// top origin: from -20px to 90px (emerging from upper garden)
-					const startY = -25 + Math.random() * 100;
+					const startY = -25 + Math.random() * 105;
 					symbol.style.top = `${startY}px`;
-
 					const initRotate = -20 + Math.random() * 40;
 					symbol.style.transform = `rotate(${initRotate}deg)`;
-
-					// FASTER ANIMATION: between 1.2s and 1.8s to fit 1-2 sec bloom window
 					const animDuration = 1.2 + Math.random() * 0.7;
 					symbol.style.animation = `gardenFallFast ${animDuration}s cubic-bezier(0.2, 0.85, 0.45, 1) forwards`;
-					if (delayMs > 0) {
-						symbol.style.animationDelay = `${delayMs}s`;
-					}
-
+					if (delayMs > 0) symbol.style.animationDelay = `${delayMs}s`;
 					burstContainer.appendChild(symbol);
-
 					symbol.addEventListener(
 						"animationend",
 						() => {
@@ -633,39 +825,26 @@
 					);
 				}
 
-				// smooth burst sequence (bloom lasts ~1.65 seconds — between 1-2 sec)
 				function startGardenBloom(durationMs = 1650) {
 					if (activeInterval) clearInterval(activeInterval);
-
-					// initial cascade: dynamic count based on screen size (performance + beauty)
-					const initialCount = window.innerWidth < 768 ? 32 : 44;
-					for (let i = 0; i < initialCount; i++) {
+					const initialCount = window.innerWidth < 768 ? 34 : 46;
+					for (let i = 0; i < initialCount; i++)
 						setTimeout(() => createSymbol(0), i * 9);
-					}
-
 					let burstStart = Date.now();
 					activeInterval = setInterval(() => {
 						if (!bloomPhase) return;
-						const elapsed = Date.now() - burstStart;
-						if (elapsed >= durationMs) return;
-
-						// gentle, adaptive spawning for smooth feeling (2-5 per wave)
+						if (Date.now() - burstStart >= durationMs) return;
 						const spawnCount = 2 + Math.floor(Math.random() * 4);
-						for (let i = 0; i < spawnCount; i++) {
-							createSymbol(0);
-						}
+						for (let i = 0; i < spawnCount; i++) createSymbol(0);
 					}, 55);
-
 					wipeTimeout = setTimeout(() => {
 						if (activeInterval) {
 							clearInterval(activeInterval);
 							activeInterval = null;
 						}
-
-						// wipe out remaining symbols with graceful fade
-						const remainingSymbols = document.querySelectorAll(".bloom-symbol");
-						if (remainingSymbols.length) {
-							remainingSymbols.forEach((s) => {
+						const remaining = document.querySelectorAll(".bloom-symbol");
+						if (remaining.length) {
+							remaining.forEach((s) => {
 								s.classList.add("wipe-symbol");
 								s.addEventListener(
 									"animationend",
@@ -676,55 +855,51 @@
 								);
 							});
 						}
-
-						// after wipe, reveal final perfectly sized image
-						setTimeout(() => {
-							revealEnchantedImage();
-						}, 320);
+						setTimeout(() => revealEnchantedImage(), 320);
 					}, durationMs);
 				}
 
-				// reveal final image — full screen but respecting original dimensions
 				function revealEnchantedImage() {
 					if (letterStage) {
 						letterStage.style.transition =
-							"opacity 0.6s cubic-bezier(0.2,0.9,0.3,1)";
+							"opacity 0.7s cubic-bezier(0.2,0.9,0.3,1)";
 						letterStage.style.opacity = "0";
 						letterStage.style.visibility = "hidden";
 						setTimeout(() => {
 							letterStage.style.display = "none";
-						}, 600);
+						}, 700);
 					}
-
 					imageRevealDiv.classList.add("visible");
 					clearAllSymbols();
 					isBlooming = false;
 					bloomPhase = false;
 				}
 
-				// trigger bloom (open letter) with 1-2 sec burst exactly
 				function triggerGardenBloom() {
 					if (isBlooming) return;
+					attemptAutoStartMusicOnInteraction();
 					isBlooming = true;
 					bloomPhase = true;
-
 					if (activeInterval) clearInterval(activeInterval);
 					if (wipeTimeout) clearTimeout(wipeTimeout);
 					clearAllSymbols();
-
-					// Bloom total duration ~1.65 sec (between 1 and 2 sec smooth)
 					startGardenBloom(1650);
-
 					const btn = document.querySelector(".open-letter-btn");
 					if (btn) {
-						btn.style.transform = "scale(0.95)";
+						btn.style.transform = "scale(0.96)";
 						setTimeout(() => {
 							if (btn) btn.style.transform = "";
 						}, 150);
 					}
 				}
 
-				// Event listener for open button (fresh binding)
+				// Final image setup (preserved logic)
+				finalImage.src = "img.jpeg";
+				finalImage.onerror = () => {
+					finalImage.src =
+						"https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop";
+				};
+
 				if (openBtn) {
 					const newOpen = openBtn.cloneNode(true);
 					openBtn.parentNode.replaceChild(newOpen, openBtn);
@@ -734,10 +909,16 @@
 					});
 				}
 
-				// create floating dust atmosphere
+				document.body.addEventListener(
+					"click",
+					() => {
+						attemptAutoStartMusicOnInteraction();
+					},
+					{ once: true },
+				);
+
 				createDust();
 
-				// initial state: letter visible, image hidden
 				letterStage.style.display = "flex";
 				letterStage.style.opacity = "1";
 				letterStage.style.visibility = "visible";
@@ -746,43 +927,32 @@
 				isBlooming = false;
 				bloomPhase = false;
 
-				// subtle sway effect to garden pattern
-				const bgPattern = document.querySelector(".garden-bg-pattern");
-				if (bgPattern) {
-					bgPattern.style.transition = "transform 0.2s";
-				}
-
-				// preload final image for instant reveal
 				const preloader = new Image();
 				preloader.src = finalImage.src;
 
-				// responsive cleanup on resize
 				let resizeTimer;
 				window.addEventListener("resize", () => {
 					clearTimeout(resizeTimer);
 					resizeTimer = setTimeout(() => {
-						if (!isBlooming && letterStage.style.display !== "none") {
+						if (!isBlooming && letterStage.style.display !== "none")
 							clearAllSymbols();
-						}
 					}, 200);
 				});
 
-				// Final delicate atmospheric floating symbols (pre-ambiance, only if letter visible)
 				setTimeout(() => {
 					if (
 						!isBlooming &&
 						letterStage.style.display !== "none" &&
 						letterStage.style.opacity !== "0"
 					) {
-						for (let i = 0; i < 8; i++) {
-							setTimeout(() => createSymbol(0), i * 160);
-						}
-						setTimeout(() => clearAllSymbols(), 2200);
+						for (let i = 0; i < 10; i++)
+							setTimeout(() => createSymbol(0), i * 150);
+						setTimeout(() => clearAllSymbols(), 2300);
 					}
-				}, 800);
+				}, 700);
 
 				console.log(
-					"✧ fully responsive monochrome garden — 1.65s bloom, no return button, perfect image fit ✧",
+					"✧ Advanced UX | Monochrome Fantasy | Async Music | Full Responsive | Logic Preserved ✧",
 				);
 			})();
 		</script>
